@@ -85,10 +85,12 @@ public final class Kartta {
 
     private void luoPseudoKartta(Random random) {
         ruudukko = new Ruutu[korkeus][leveys];
-        Lista<Solmu> lista = new Lista<>();
+        Lista<Solmu> seinalista = new Lista<>();
+        Lista<Solmu> vesilista = new Lista<>();
         int i;
         int vesikerroin = 1;
         int seinatsanssi;
+        int vesitsanssi;
         boolean vieressaseina;
         boolean vieressatoinenseina;
 
@@ -103,122 +105,48 @@ public final class Kartta {
                 } else {
                     ruudukko[y][x] = Ruutu.LATTIA;
                 }
-            }
 
-        }
-        for (int y = 0; y < korkeus; y++) {
-            for (int x = 0; x < leveys; x++) {
-                i = random.nextInt(1000);
-                if (x - 1 > 0) {
-                    if (ruudukko[y][x - 1] == Ruutu.VESI) {
-                        if (!ekavesi) {
-                            vesikerroin = vesikerroin + 175;
-                            ekavesi = true;
-                        } else {
-                            vesikerroin = vesikerroin + 175;
-                        }
+
+                if (ruudukko[y][x] == Ruutu.LATTIA) {
+                    seinatsanssi = random.nextInt(1000);
+                    vesitsanssi = random.nextInt(1000);
+                    if (seinatsanssi == 666) {
+                        ruudukko[y][x] = Ruutu.SEINÄ;
+                        seinalista.add(new Solmu(x, y, null, 0));
+
                     }
-
-                    if (x + 1 < leveys && !(y - 1 < 0)) {
-                        if (ruudukko[y - 1][x + 1] == Ruutu.VESI) {
-                            if (!ekavesi) {
-                                vesikerroin = vesikerroin + 100;
-                                ekavesi = true;
-                            } else {
-                                vesikerroin = vesikerroin + 100;
-                            }
-                        }
-                    }
-
-                    if (!(y - 1 < 0)) {
-                        if (ruudukko[y - 1][x] == Ruutu.VESI) {
-                            if (!ekavesi) {
-                                vesikerroin = vesikerroin + 100;
-
-                            } else {
-                                vesikerroin = vesikerroin + 100;
-                            }
-                        }
-                        if (x - 1 > 0) {
-                            if (ruudukko[y - 1][x - 1] == Ruutu.VESI) {
-                                if (!ekavesi) {
-                                    vesikerroin = vesikerroin + 100;
-
-                                } else {
-                                    vesikerroin = vesikerroin + 100;
-                                }
-                            }
-                        }
-
-                        if (i < 2 * vesikerroin) {
-                            ruudukko[y][x] = Ruutu.VESI;
-                        }
-                        vesikerroin = 1;
-                        ekavesi = false;
-
-                        if (ruudukko[y][x] == Ruutu.LATTIA) {
-                            seinatsanssi = random.nextInt(1000);
-                            if (seinatsanssi == 666) {
-                                ruudukko[y][x] = Ruutu.SEINÄ;
-                                lista.add(new Solmu(x, y, null, 0));
-
-                            }
-
-                        }
-                    }
-
-                }
-            }
-        }
-        for (int y = 0; y < korkeus; y++) {
-            for (int x = 0; x < leveys; x++) {
-                i = random.nextInt(1000);
-                if (ruudukko[y][x] != Ruutu.VESI) {
-                    if (x + 1 < leveys) {
-                        if (ruudukko[y][x + 1] == Ruutu.VESI) {
-                            vesikerroin += 175;
-                        }
-                    }
-                    if (y + 1 < korkeus) {
-                        if (ruudukko[y + 1][x] == Ruutu.VESI) {
-                            vesikerroin += 100;
-                        }
-                        if (x + 1 < leveys) {
-                            if (ruudukko[y + 1][x + 1] == Ruutu.VESI) {
-                                vesikerroin += 100;
-                            }
-
-                        }
-                        if (x - 1 > 0) {
-                            if (ruudukko[y + 1][x - 1] == Ruutu.VESI) {
-                                vesikerroin += 100;
-                            }
-                        }
-                    }
-                    if (i < 2 * vesikerroin) {
+                    if (vesitsanssi < 4) {
                         ruudukko[y][x] = Ruutu.VESI;
-                        vesikerroin = 1;
+                        vesilista.add(new Solmu(x, y, null, 0));
                     }
 
                 }
-
             }
-
         }
-        luoSeinat(lista);
+
+        luoVesi(vesilista);
+        luoSeinat(seinalista);
     }
 
-    private void luoSeinat(Lista<Solmu> lista) {
+    private void luoSeinat(Lista<Solmu> seinaPaalut) {
         Lista<Solmu> uusilista = new Lista<>();
-        for (int i = 0; i < lista.size()-1; i++) {
-            while (lista.size() > 1) {
-                Bestfirst bestfirst = new Bestfirst(lista, this);
+        Random randomisetti = new Random();
+        for (int i = 0; i < seinaPaalut.size() - 1; i++) {
+            while (seinaPaalut.size() > 1) {
+                int sattuma = randomisetti.nextInt(10);
+
+                Bestfirst bestfirst = new Bestfirst(seinaPaalut, this);
 
                 Lista<Solmu> templista = bestfirst.haku();
-                for (int y = 0; y < templista.size()-1; y++) {
+                for (int y = 0; y < templista.size() - 1; y++) {
                     uusilista.add(templista.get(y));
                 }
-                lista.remove(0);
+                if (sattuma < 3 && seinaPaalut.size() > 2) {
+                    seinaPaalut.remove(0);
+                    seinaPaalut.remove(0);
+                } else {
+                    seinaPaalut.remove(0);
+                }
             }
         }
         for (int y = 0; y < korkeus; y++) {
@@ -231,6 +159,40 @@ public final class Kartta {
                 }
 
             }
+        }
+
+    }
+
+    private void luoVesi(Lista<Solmu> vedet) {
+        Random sattuma = new Random();
+        int a;
+        int sattumakerroin = 100;
+        Integer[][] kayty = new Integer[getKorkeus()][getLeveys()];
+
+        while (!vedet.isEmpty()) {
+
+            a = sattuma.nextInt(1000);
+            if (a < 10 * sattumakerroin) {
+                for (Solmu s : naapurit(vedet.get(0).getX(), vedet.get(0).getY(), vedet.get(0), 0)) {
+
+                    if (kayty[s.getY()][s.getX()] != null) {
+                        continue;
+                    }
+                    kayty[s.getY()][s.getX()] = s.getMatkaAlusta();
+
+                    if (a < 9 * sattumakerroin) {
+                        ruudukko[s.getY()][s.getX()] = Ruutu.VESI;
+                        vedet.add(new Solmu(s.getX(), s.getY(), s, 0));
+                    }
+
+                }
+                int d = sattuma.nextInt(11);
+                sattumakerroin -= d;
+
+            }
+            sattumakerroin = 50;
+            vedet.remove(0);
+
         }
 
     }
