@@ -18,10 +18,9 @@ public class PolkuTulostin {
      * Tulostaa kartan ja nopeimman polun kartalla
      *
      * @param polku
-     * @param astar
+     * @param kartta
      */
-    public void tulostaPolku(Solmu polku, Astar astar) {
-       // ArrayList<Solmu> ruudut = new ArrayList<>();
+    public void tulostaPolku(Solmu polku, Kartta kartta) {
         Lista<Solmu> ruudut = new Lista<>();
         ruudut.add(polku);
         Solmu d = polku.getEdellinen();
@@ -30,35 +29,40 @@ public class PolkuTulostin {
             ruudut.add(d);
             d = d.getEdellinen();
         }
-        for (int y = 0; y < astar.kartta.getKorkeus(); y++) {
-            for (int x = 0; x < astar.kartta.getLeveys(); x++) {
+        for (int y = 0; y < kartta.getKorkeus(); y++) {
+            for (int x = 0; x < kartta.getLeveys(); x++) {
                 printattu = false;
                 for (Solmu s : ruudut) {
                     if (s.getY() == y && s.getX() == x) {
                         if (!printattu) {
-                            System.out.print("+");
-                            printattu = true;
+                            if (s.getMatkaAlusta() > 10000) {
+                                System.out.print("X");
+                                printattu = true;
+                            } else {
+                                System.out.print("+");
+                                printattu = true;
+                            }
                         }
                     }
                 }
-                if (astar.kartta.getRuutu(x, y) == Ruutu.SEINÄ && !printattu) {
+                if (kartta.getRuutu(x, y) == Ruutu.SEINÄ && !printattu) {
                     System.out.print("@");
                     printattu = true;
                 }
-                if (astar.kartta.getRuutu(x, y) == Ruutu.METSÄ && !printattu) {
+                if (kartta.getRuutu(x, y) == Ruutu.METSÄ && !printattu) {
                     System.out.print("^");
                     printattu = true;
                 }
-                if (astar.kartta.getRuutu(x, y) == Ruutu.VESI && !printattu) {
+                if (kartta.getRuutu(x, y) == Ruutu.VESI && !printattu) {
                     System.out.print("?");
                     printattu = true;
                 }
-                if (astar.kartta.getRuutu(x, y) == Ruutu.LATTIA && !printattu) {
+                if (kartta.getRuutu(x, y) == Ruutu.LATTIA && !printattu) {
                     System.out.print("-");
                 }
             }
             System.out.println("");
         }
     }
-    
+
 }

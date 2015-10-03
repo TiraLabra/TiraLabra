@@ -22,7 +22,7 @@ public class Karttatesti {
     Kartta kartta;
 
     public Karttatesti() {
-        this.kartta = new Kartta(10, 10);
+        this.kartta = new Kartta(10, 10, null);
         
 
     }

@@ -19,7 +19,7 @@ public class AstarTesti {
     private final Kartta kartta;
     private final Astar astar;
     public AstarTesti() {
-        this.kartta = new Kartta(4,2);
+        this.kartta = new Kartta(4,2,null);
         
         this.astar = new Astar(kartta);
         

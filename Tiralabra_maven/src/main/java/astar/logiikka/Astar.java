@@ -36,7 +36,6 @@ public class Astar {
      * @return
      */
     public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
-       // PriorityQueue<Solmu> rintama = new PriorityQueue<>(10000, new Comparator<Solmu>() {
              PrioKeko<Solmu> rintama = new PrioKeko<>(new Comparator<Solmu>() {
 
             @Override
@@ -55,7 +54,7 @@ public class Astar {
             nykyinen = (Solmu) rintama.pullDelete();
 
             if (nykyinen.getY() == maaliY && nykyinen.getX() == maaliX) {
-                tulostin.tulostaPolku(nykyinen, this);
+                tulostin.tulostaPolku(nykyinen, kartta);
                 return nykyinen;
             }
             for (Solmu n : kartta.naapurit(nykyinen.getX(), nykyinen.getY(), nykyinen, nykyinen.getMatkaAlusta())) {

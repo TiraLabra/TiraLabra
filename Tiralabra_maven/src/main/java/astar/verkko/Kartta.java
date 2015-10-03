@@ -24,52 +24,41 @@ public final class Kartta {
     private int alkupisteY;
     private int maalipisteX;
     private int maalipisteY;
-    private Random random;
+    private final Random random;
 
+    /**
+     * luo kaksiulotteisen kartan.
+     *
+     * @param leveys
+     * @param korkeus
+     * @param random
+     */
     public Kartta(int leveys, int korkeus, Random random) {
         this.leveys = leveys;
         this.korkeus = korkeus;
         this.random = random;
 
-        luoPseudoKartta(random);
+        if (random == null) {
+            luoKartta();
+        } else {
+            luoPseudoKartta(random);
+        }
     }
 
-    /**
-     * Luo kaksiulotteisen taulukkokartan.
-     *
-     * @param leveys
-     * @param korkeus
-     */
-    public Kartta(int leveys, int korkeus) {
-
-        this(leveys, korkeus, null);
-
-        luoKartta();
-
-    }
+    
 
     /**
-     * Luo satunnaisen kaksiulotteisen taulukkokartan, taulukon alkioina on
-     * solmuja, jotka kuvastavat koordinaatteja.
+     * Luo satunnaisen kaksiulotteisen taulukkokartan.
      *
      */
     private void luoKartta() {
-        ruudukko = new Ruutu[korkeus][leveys];
-        for (int y = 0; y < korkeus; y++) {
-            for (int x = 0; x < leveys; x++) {
-                ruudukko[y][x] = Ruutu.LATTIA;
-            }
-        }
-
-    }
-
-    private void luoKartta(Random random) {
+        Random randomi = new Random();
         ruudukko = new Ruutu[korkeus][leveys];
         int i;
 
         for (int y = 0; y < korkeus; y++) {
             for (int x = 0; x < leveys; x++) {
-                i = random.nextInt(100);
+                i = randomi.nextInt(1000);
                 if (i < 5) {
                     ruudukko[y][x] = Ruutu.SEINÄ;
                 } else if (i >= 5 && i < 15) {
@@ -82,6 +71,12 @@ public final class Kartta {
             }
         }
     }
+
+    /**
+     * Luo "järkevän" satunnaisen kartan. Erittäin aikavaativa :(
+     *
+     * @param random
+     */
 
     private void luoPseudoKartta(Random random) {
         ruudukko = new Ruutu[korkeus][leveys];
@@ -106,7 +101,6 @@ public final class Kartta {
                     ruudukko[y][x] = Ruutu.LATTIA;
                 }
 
-
                 if (ruudukko[y][x] == Ruutu.LATTIA) {
                     seinatsanssi = random.nextInt(1000);
                     vesitsanssi = random.nextInt(1000);
@@ -127,6 +121,13 @@ public final class Kartta {
         luoVesi(vesilista);
         luoSeinat(seinalista);
     }
+
+    /**
+     * Hakee seinäruudut kartalta ja hakee reitit toisiinsa bestfirst searchillä
+     * ja tekee reiteistä seinää.
+     *
+     * @param seinaPaalut
+     */
 
     private void luoSeinat(Lista<Solmu> seinaPaalut) {
         Lista<Solmu> uusilista = new Lista<>();
@@ -163,6 +164,11 @@ public final class Kartta {
 
     }
 
+    /**
+     * Luo vesistöjen muotoisia alueita.
+     *
+     * @param vedet
+     */
     private void luoVesi(Lista<Solmu> vedet) {
         Random sattuma = new Random();
         int a;

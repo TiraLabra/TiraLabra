@@ -12,7 +12,7 @@ import astar.verkko.Solmu;
 import java.util.Comparator;
 
 /**
- *
+ *Bestfirstsearch algoritmi
  * @author sasumaki
  */
 public class Bestfirst {
@@ -24,7 +24,10 @@ public class Bestfirst {
         this.lista = lista;
         this.kartta = kartta;
     }
-
+/**
+ * hakee satunnaiskarttageneraattorin seinät bestfirst searchilla.
+ * @return 
+ */
     public Lista<Solmu> haku() {
         Lista<Solmu> polku = new Lista<>();
         if(lista.size() < 2){

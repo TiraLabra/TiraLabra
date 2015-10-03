@@ -1,8 +1,11 @@
 /home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/verkko/PolkuTulostin.java
 /home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/verkko/Solmu.java
+/home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/logiikka/Bestfirst.java
+/home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/logiikka/BreadthFirst.java
 /home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/logiikka/Astar.java
-/home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/verkko/Ruutu.java
 /home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/astar/Main.java
+/home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/verkko/Ruutu.java
 /home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/verkko/Kartta.java
 /home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/tietorakenteet/Lista.java
+/home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/astar/Kayttoliittyma.java
 /home/sasumaki/TiraLabra/Tiralabra_maven/src/main/java/astar/tietorakenteet/PrioKeko.java
