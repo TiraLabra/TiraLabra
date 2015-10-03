@@ -9,7 +9,7 @@ package astar.verkko;
  *
  * @author sasumaki
  */
-public class Solmu {
+public class Solmu implements Comparable<Solmu> {
 
     private final int x;
     private final int y;
@@ -28,7 +28,8 @@ public class Solmu {
         return x;
     }
 
-    /** Jos solmujen X ja Y koordinaatit ovat samat ne ovat sama solmu
+    /**
+     * Jos solmujen X ja Y koordinaatit ovat samat ne ovat sama solmu
      *
      * @param o
      * @return
@@ -61,6 +62,11 @@ public class Solmu {
 
     public Solmu getEdellinen() {
         return edellinen;
+    }
+
+    @Override
+    public int compareTo(Solmu o) {
+        return this.matkaAlusta - o.getMatkaAlusta();
     }
 
 }

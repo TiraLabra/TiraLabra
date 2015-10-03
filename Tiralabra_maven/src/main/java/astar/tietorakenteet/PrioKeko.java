@@ -21,14 +21,22 @@ public class PrioKeko<E> {
 
     private final Comparator<? super E> comparator;
 
+    /**
+     * parametriton konstruktori
+     */
+    public PrioKeko() {
+        this(null);
+    }
+
+    /**
+     * konstruktori parametrina comparator
+     *
+     * @param comparator
+     */
     public PrioKeko(Comparator comparator) {
         this.comparator = comparator;
         this.size = 0;
         this.heap = new Object[11];
-    }
-
-    public PrioKeko() {
-        this(null);
     }
 
     /**
@@ -145,9 +153,9 @@ public class PrioKeko<E> {
             E toka = (E) heap[b];
             if (eka.compareTo(toka) < 0) {
                 return a;
+            } else {
+                return b;
             }
-
-            return b;
         } else {
             if (comparator.compare((E) heap[a], (E) heap[b]) < 0) {
                 return a;

@@ -5,6 +5,7 @@
  */
 package astar.logiikka;
 
+import astar.tietorakenteet.Jono;
 import astar.tietorakenteet.PrioKeko;
 import astar.verkko.Kartta;
 import astar.verkko.PolkuTulostin;
@@ -25,13 +26,13 @@ public class BreadthFirst {
     }
 
     public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
-        PrioKeko<Solmu> rintama = new PrioKeko<>();
+        Jono<Solmu> rintama = new Jono<>();
         PolkuTulostin tulostin = new PolkuTulostin();
 
-        rintama.heapInsert(new Solmu(alkuX, alkuY, null, 0));
+        rintama.enqueue(new Solmu(alkuX, alkuY, null, 0));
 
         while (!rintama.isEmpty()) {
-            Solmu nykyinen = rintama.pullDelete();
+            Solmu nykyinen = rintama.dequeue();
 
             if (nykyinen.getX() == maaliX && nykyinen.getY() == maaliY) {
                 tulostin.tulostaPolku(nykyinen, kartta);
@@ -41,9 +42,10 @@ public class BreadthFirst {
 
             for (Solmu s : kartta.naapurit(nykyinen.getX(), nykyinen.getY(), nykyinen, nykyinen.getMatkaAlusta())) {
                 if (kayty[s.getY()][s.getX()] != null) {
-                    rintama.heapInsert(s);
-                    kayty[s.getY()][s.getX()] = s.getMatkaAlusta();
+                    continue;
                 }
+                rintama.enqueue(s);
+                kayty[s.getY()][s.getX()] = s.getMatkaAlusta();
             }
 
         }

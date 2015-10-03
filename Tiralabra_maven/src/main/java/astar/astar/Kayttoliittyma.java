@@ -7,6 +7,7 @@ package astar.astar;
 
 import astar.logiikka.Astar;
 import astar.logiikka.BreadthFirst;
+import astar.logiikka.Dijkstra;
 import astar.verkko.Kartta;
 import astar.verkko.Solmu;
 import java.util.Random;
@@ -67,7 +68,8 @@ public class Kayttoliittyma {
             maaliY = korkeus - 1;
         }
         System.out.println("1 = A*");
-        System.out.println("2 = BFS");
+        System.out.println("2 = Dijkstra");
+        System.out.println("3 = BFS \n");
         algoritmi = Integer.parseInt(lukija.nextLine());
 
         System.out.println("Luodaanko superrandomkartta666? (y/n): ");
@@ -113,10 +115,14 @@ public class Kayttoliittyma {
         Kartta kartta = new Kartta(leveys, korkeus, random);
         Astar astar = new Astar(kartta);
         BreadthFirst bfs = new BreadthFirst(kartta);
+        Dijkstra dijkstra = new Dijkstra(kartta);
         if (algoritmi == 1) {
             s = astar.haku(alkuX, alkuY, maaliX, maaliY);
         }
-        if (algoritmi == 2) {
+        if(algoritmi == 2){
+            s = dijkstra.haku(alkuX, alkuY, maaliX, maaliY);
+        }
+        if (algoritmi == 3) {
             s = bfs.haku(alkuX, alkuY, maaliX, maaliY);
         }
 
