@@ -22,6 +22,11 @@ public class Kayttoliittyma {
 
     private static int algoritmi;
 
+    /**
+     * Kyselee kysymyksiä kartan asetuksia varten.
+     *
+     * @param lukija
+     */
     public Kayttoliittyma(Scanner lukija) {
         boolean skip = false;
         System.out.println("Anna kartan leveys: ");
@@ -99,17 +104,31 @@ public class Kayttoliittyma {
             peruskarttaluonti(leveys, korkeus, alkuX, alkuY, maaliX, maaliY);
         }
     }
-
+/**
+ * Tekee toiminnan ilman satunnaiskarttageneraattoria
+ * @param leveys
+ * @param korkeus
+ * @param alkuX
+ * @param alkuY
+ * @param maaliX
+ * @param maaliY 
+ */
     private void peruskarttaluonti(int leveys, int korkeus, int alkuX, int alkuY, int maaliX, int maaliY) {
         System.out.println("Kartta: ");
-        long aikaAlussa = System.currentTimeMillis();
 
         toiminta(leveys, korkeus, alkuX, alkuY, maaliX, maaliY, null);
 
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
-
+/**
+ * Tekee haut ym. ohjelman toiminnat
+ * @param leveys
+ * @param korkeus
+ * @param alkuX
+ * @param alkuY
+ * @param maaliX
+ * @param maaliY
+ * @param random 
+ */
     private static void toiminta(int leveys, int korkeus, int alkuX, int alkuY, int maaliX, int maaliY, Random random) {
         Solmu s;
         Kartta kartta = new Kartta(leveys, korkeus, random);
@@ -117,9 +136,15 @@ public class Kayttoliittyma {
         BreadthFirst bfs = new BreadthFirst(kartta);
         Dijkstra dijkstra = new Dijkstra(kartta);
         if (algoritmi == 1) {
+            long aikaAlussa = System.currentTimeMillis();
+
             s = astar.haku(alkuX, alkuY, maaliX, maaliY);
+            
+            long aikaLopussa = System.currentTimeMillis();
+            System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+
         }
-        if(algoritmi == 2){
+        if (algoritmi == 2) {
             s = dijkstra.haku(alkuX, alkuY, maaliX, maaliY);
         }
         if (algoritmi == 3) {

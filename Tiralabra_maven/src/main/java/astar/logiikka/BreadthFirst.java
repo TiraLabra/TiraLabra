@@ -6,7 +6,6 @@
 package astar.logiikka;
 
 import astar.tietorakenteet.Jono;
-import astar.tietorakenteet.PrioKeko;
 import astar.verkko.Kartta;
 import astar.verkko.PolkuTulostin;
 import astar.verkko.Solmu;
