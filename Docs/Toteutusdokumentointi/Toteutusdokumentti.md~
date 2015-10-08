@@ -1,0 +1,10 @@
+Aikavaativuudet: Astar = n
+		 Keko = n
+		 Lista = n
+
+
+
+
+Suorituskykytestaus:
+
+Ohessa kuvat astar algoritmin aikavaativuudesta. Arvoista huomaamme algoritmin aikavaativuuden olevan lineaarinen.

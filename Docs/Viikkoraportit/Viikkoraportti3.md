@@ -1,0 +1,4 @@
+Viikko sisällytti paljon kyyneliä ja raivoa. Lopulta asiat alkoivat rullaamaan ohjaajien avulla kun koodi tuhottiin ja poltettiin ja kirjoitettiin uudestaan. Tällä hetkellä algoritmi ei ole täysin toimiva mutta perusrakenne on valmis. En tiedä miksi se ei toimi, mutta tietyillä syötteillä algoritmi lähtee hakemaan reittiä väärästä suunnasta ja jää jumiin "pyörimään" eikä koskaan löydä perille. Olen kysynyt neuvoa useilta ystäviltäni, joista kukaan ei ole keksinyt mikä on ongelmana. Gittiin on pushatussa versiossa on nyt edellämainitun ongelman muodostava syöte.
+ En tiedä voiko enum luokalle mitään testiä kirjoittaa ja karttaluokalle testien tekeminen tuntuu vaikealta joten ajattelin jättää sen tehtäväksi kun toiminta on kunnossa...
+Toivon että saisin jo loppuviikosta algoritmin toimintakuntoon jotta voisin ryhtyä tietorakenteiden tekoon.
+Javadocit tehty.
