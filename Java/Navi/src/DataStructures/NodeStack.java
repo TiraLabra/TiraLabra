@@ -34,7 +34,7 @@ public class NodeStack {
     }
 
     /**
-     * Pops an item off of the top of the stack.
+     * Pops an item off from the top of the stack.
      *
      * @return Item that was most recently pushed to stack.
      */
