@@ -17,10 +17,12 @@ class Vertex implements Comparable<Vertex> {
         name = argName;
     }
 
+    @Override
     public String toString() {
         return name;
     }
 
+    @Override
     public int compareTo(Vertex other) {
         return Double.compare(minDistance, other.minDistance);
     }
@@ -73,53 +75,49 @@ public class Dijkstra {
         Collections.reverse(path);
         return path;
     }
-    
-    public void test()
-    {
-        
+
+    public void test() {
+
         Vertex start = new Vertex("start");
         Vertex goal = new Vertex("goal");
-        
-        
-        
+
         Vertex v0 = new Vertex("Harrisburg");
-	Vertex v1 = new Vertex("Baltimore");
-	Vertex v2 = new Vertex("Washington");
-	Vertex v3 = new Vertex("Philadelphia");
-	Vertex v4 = new Vertex("Binghamton");
-	Vertex v5 = new Vertex("Allentown");
-	Vertex v6 = new Vertex("New York");
+        Vertex v1 = new Vertex("Baltimore");
+        Vertex v2 = new Vertex("Washington");
+        Vertex v3 = new Vertex("Philadelphia");
+        Vertex v4 = new Vertex("Binghamton");
+        Vertex v5 = new Vertex("Allentown");
+        Vertex v6 = new Vertex("New York");
         Vertex v7 = new Vertex("Never Never Land");
-	v0.adjacencies = new Edge[]{ new Edge(v1,  79.83),
-	                             new Edge(v5,  81.15) };
-	v1.adjacencies = new Edge[]{ new Edge(v0,  79.75),
-	                             new Edge(v2,  39.42),
-	                             new Edge(v3, 103.00) };
-	v2.adjacencies = new Edge[]{ new Edge(v1,  38.65) };
-	v3.adjacencies = new Edge[]{ new Edge(v1, 102.53),
-	                             new Edge(v5,  61.44),
-	                             new Edge(v6,  96.79) };
-	v4.adjacencies = new Edge[]{ new Edge(v5, 133.04) };
-	v5.adjacencies = new Edge[]{ new Edge(v0,  81.77),
-	                             new Edge(v3,  62.05),
-	                             new Edge(v4, 134.47),
-	                             new Edge(v6,  91.63) };
-	v6.adjacencies = new Edge[]{ new Edge(v3,  97.24),
-	                             new Edge(v5,  87.94) };
-        v7.adjacencies = new Edge[] {
+        v0.adjacencies = new Edge[]{new Edge(v1, 79.83),
+            new Edge(v5, 81.15)};
+        v1.adjacencies = new Edge[]{new Edge(v0, 79.75),
+            new Edge(v2, 39.42),
+            new Edge(v3, 103.00)};
+        v2.adjacencies = new Edge[]{new Edge(v1, 38.65)};
+        v3.adjacencies = new Edge[]{new Edge(v1, 102.53),
+            new Edge(v5, 61.44),
+            new Edge(v6, 96.79)};
+        v4.adjacencies = new Edge[]{new Edge(v5, 133.04)};
+        v5.adjacencies = new Edge[]{new Edge(v0, 81.77),
+            new Edge(v3, 62.05),
+            new Edge(v4, 134.47),
+            new Edge(v6, 91.63)};
+        v6.adjacencies = new Edge[]{new Edge(v3, 97.24),
+            new Edge(v5, 87.94)};
+        v7.adjacencies = new Edge[]{
             new Edge(v0, 79.75),
             new Edge(v2, 39.42),
             new Edge(v3, 103.00)
         };
-	Vertex[] vertices = { v0, v1, v2, v3, v4, v5, v6, v7 };
+        Vertex[] vertices = {v0, v1, v2, v3, v4, v5, v6, v7};
 
         computePaths(v0);
-        for (Vertex v : vertices)
-	{
-	    System.out.println("Distance to " + v + ": " + v.minDistance);
-	    List<Vertex> path = getShortestPathTo(v);
-	    System.out.println("Path: " + path);
-	}
+        for (Vertex v : vertices) {
+            System.out.println("Distance to " + v + ": " + v.minDistance);
+            List<Vertex> path = getShortestPathTo(v);
+            System.out.println("Path: " + path);
+        }
     }
-    
+
 }

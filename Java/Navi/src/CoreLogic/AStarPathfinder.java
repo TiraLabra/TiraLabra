@@ -1,6 +1,5 @@
 package CoreLogic;
 
-// @author Leevi
 import DataStructures.Node;
 import DataStructures.NodeStack;
 import Main.Navi;
@@ -9,6 +8,10 @@ import Terrain.CartesianTile;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Leevi
+ */
 public class AStarPathfinder {
 
     //================================================================================
@@ -23,6 +26,12 @@ public class AStarPathfinder {
     // Constructors
     //================================================================================'
     
+    /**
+     *
+     * @param map, generated 2d array that represents terrain.
+     * @see CartesianMap
+     */
+        
     public AStarPathfinder(CartesianMap map) {
 
         possibleRoute = new NodeStack(999);
@@ -35,6 +44,19 @@ public class AStarPathfinder {
     // Route calculation
     //================================================================================
     
+    /**
+     * Method searches the shortest 2d path between nodes.
+     *
+     * @param startX
+     * @param startY
+     * @param goalX
+     * @param goalY
+     * @return 2d integer array, representing a cartesian map.
+     * @see CartesianTile
+     * @see NodeStack
+     * @see Node
+     */
+        
     public int[][] determineRoute(int startX, int startY, int goalX, int goalY) {
         
         if (startX == goalX && startY == goalY) {
@@ -59,19 +81,19 @@ public class AStarPathfinder {
             loop:
             for (Node node : map.getAdjacentNodes(current.x, current.y)) { // Check node's neighbours.
                 
-                for (Node compare : closed) {
+                for (Node compare : closed) { // Check if node was already evaluated.
                     if (compare.x == node.x && compare.y == node.y) {
                         continue loop;
                     }
                 }
-                if (node.type == CartesianTile.VOID) {
+                if (node.type == CartesianTile.VOID) { // Check if neighbour is void.
                     continue;
                 }
-                else if (index == 1) {
+                else if (index == 1) { // Push first neighbour to stack.
                     closed.add(node);
-                    possibleRoute.push(node); // Push first neighbour to stack.
+                    possibleRoute.push(node);
                 } 
-                else { // Check if new node is better than current.
+                else { // Check if new neighbour is better than current.
                     int heuristicDistance = Math.abs((node.x - goalX)) + Math.abs((node.y - goalY));
                     int previousHeuristicDistance = Math.abs(current.x - goalX) + Math.abs(current.y - goalY);
                     int movementCost = map.getSingleTile(node.x, node.y);

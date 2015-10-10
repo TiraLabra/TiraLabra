@@ -1,15 +1,24 @@
 package DataStructures;
 
-// @author Leevi
-
 import Terrain.CartesianTile;
 
+/**
+ *
+ * @author Leevi
+ */
 public class Node {
 
     public int x;
     public int y;
     public CartesianTile type;
     
+    /**
+     * Node represents a single point in a 2d map.
+     *
+     * @param x
+     * @param y
+     * @param type
+     */
     public Node(int x, int y, CartesianTile type) {
         
         this.x = x;
@@ -18,6 +27,10 @@ public class Node {
         
     }
     
+    /**
+     *
+     * @return int, representing the cost of movement.
+     */
     public int getMovementCost() {
         
         return CartesianTile.getMovementCostFromNodeName(type);
