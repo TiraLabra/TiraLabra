@@ -15,11 +15,11 @@ public enum CartesianTile {
             case HIGHWAY:
                 return 1;
             case ROAD:
-                return 3;
+                return 2;
             case TRAFFIC:
-                return 6;
+                return 3;
             case DIRTROAD:
-                return 7;
+                return 4;
             case VOID:
                 return 99;
         }

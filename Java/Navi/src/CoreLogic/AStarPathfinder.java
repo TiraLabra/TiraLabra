@@ -16,7 +16,6 @@ public class AStarPathfinder {
     //================================================================================
     
     NodeStack possibleRoute;
-    List<Node> open;
     List<Node> closed; // List of nodes that have not been searched, sorted by their (heuristic) distance to the goal.
     CartesianMap map;
 
@@ -27,7 +26,6 @@ public class AStarPathfinder {
     public AStarPathfinder(CartesianMap map) {
 
         possibleRoute = new NodeStack(999);
-        open = new ArrayList<>();
         closed = new ArrayList<>();
         this.map = map;
 
@@ -58,24 +56,42 @@ public class AStarPathfinder {
 
             int index = 1;
             
+            loop:
             for (Node node : map.getAdjacentNodes(current.x, current.y)) { // Check node's neighbours.
                 
-                if (index == 1) {
+                for (Node compare : closed) {
+                    if (compare.x == node.x && compare.y == node.y) {
+                        continue loop;
+                    }
+                }
+                if (node.type == CartesianTile.VOID) {
+                    continue;
+                }
+                else if (index == 1) {
+                    closed.add(node);
                     possibleRoute.push(node); // Push first neighbour to stack.
                 } 
-                else {
+                else { // Check if new node is better than current.
                     int heuristicDistance = Math.abs((node.x - goalX)) + Math.abs((node.y - goalY));
                     int previousHeuristicDistance = Math.abs(current.x - goalX) + Math.abs(current.y - goalY);
                     int movementCost = map.getSingleTile(node.x, node.y);
                     int previousMovementCost = map.getSingleTile(current.x, current.y);
-                    if (previousHeuristicDistance + previousMovementCost > heuristicDistance + movementCost) {
+                    if (previousHeuristicDistance > heuristicDistance) {
+                        closed.remove(closed.size() - 1);
+                        closed.add(node);
                         possibleRoute.pop();
                         possibleRoute.push(node);
                     }
                 }
+                
+                current = possibleRoute.peek();
 
                 index++;
 
+            }
+            
+            if (index == 1) { // Dead end.
+                closed.add(possibleRoute.pop());
             }
             
             current = possibleRoute.peek();
