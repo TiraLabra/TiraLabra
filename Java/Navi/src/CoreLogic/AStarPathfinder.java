@@ -120,14 +120,101 @@ public class AStarPathfinder {
 
         }
         
-        List<Node> nodes = new ArrayList<>();
-        while(!possibleRoute.isEmpty()) {
-            nodes.add(possibleRoute.pop());
+        List<Node> heuristicRoute = new ArrayList<>();
+        while (!possibleRoute.isEmpty()) {
+            heuristicRoute.add(possibleRoute.pop());
         }
         
-        int[][] returnMap = new int[Navi.xLim][Navi.yLim];
+        NodeStack route = new NodeStack(999);
+        CartesianTile anotherType;
+        Node anotherCurrent = new Node(0, 0, type);
         
-        for (Node node : nodes) {
+        boolean didBreakRoute = false;
+        
+        for (int i = 0; i < heuristicRoute.size(); i++) {
+            Node a = heuristicRoute.get(i);
+            int adjancents = 0;
+            for (int j = 0; j < heuristicRoute.size(); j++) {
+                Node b = heuristicRoute.get(j);
+                if ((a.x == b.x + 1 && a.y == b.y) || (a.x == b.x - 1 && a.y == b.y) || (a.x == b.x && a.y == b.y + 1) || (a.x == b.x && a.y == b.y - 1)) {
+                    adjancents++;
+                }
+            }
+            if (adjancents < 3) {
+                route.push(a);
+            }
+            else {
+                anotherType = CartesianTile.getTypeFromMovementCost(map.getMap()[a.x][a.y]);
+                anotherCurrent = new Node(a.x, a.y, anotherType);
+                route.push(anotherCurrent); // Push start node to stack.
+                didBreakRoute = true;
+                break;
+            }
+        }
+        
+        closed.clear();
+
+        while (true) {
+            
+            if (!didBreakRoute) {
+                break;
+            }
+            
+            if (anotherCurrent.x == startX && anotherCurrent.y == startY) {
+                break; // Finished.
+            }
+
+            int index = 1;
+            
+            loop:
+            for (Node node : map.getAdjacentNodes(anotherCurrent.x, anotherCurrent.y)) { // Check node's neighbours.
+                
+                for (Node compare : closed) { // Check if node was already evaluated.
+                    if (compare.x == node.x && compare.y == node.y) {
+                        continue loop;
+                    }
+                }
+                if (node.type == CartesianTile.VOID) { // Check if neighbour is void.
+                    continue;
+                }
+                else if (index == 1) { // Push first neighbour to stack.
+                    closed.add(node);
+                    route.push(node);
+                } 
+                else { // Check if new neighbour is better than current.
+                    int heuristicDistance = Math.abs((node.x - startX)) + Math.abs((node.y - startY));
+                    int previousHeuristicDistance = Math.abs(anotherCurrent.x - startX) + Math.abs(anotherCurrent.y - startY);
+                    int movementCost = map.getSingleTile(node.x, node.y);
+                    int previousMovementCost = map.getSingleTile(anotherCurrent.x, anotherCurrent.y);
+                    if (previousHeuristicDistance > heuristicDistance) {
+                        closed.remove(closed.size() - 1);
+                        closed.add(node);
+                        route.pop();
+                        route.push(node);
+                    }
+                }
+                
+                anotherCurrent = route.peek();
+
+                index++;
+
+            }
+            
+            if (index == 1) { // Dead end.
+                closed.add(route.pop());
+            }
+            
+            if (route.isEmpty()) {
+                return null;
+            }
+            anotherCurrent = route.peek();
+
+        }
+ 
+        int[][] returnMap = new int[Navi.xLim][Navi.yLim];
+
+        while (!route.isEmpty()) {
+            Node node = route.pop();
             returnMap[node.x][node.y] = 200;
         }
         

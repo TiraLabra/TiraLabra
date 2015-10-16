@@ -5,8 +5,8 @@ import UI.TestUserInterface;
 // @author Leevi
 public class Navi {
     
-    final public static int xLim = 20;
-    final public static int yLim = 28;
+    final public static int xLim = 30;
+    final public static int yLim = 38;
 
     public static void main(String[] args) {
         
