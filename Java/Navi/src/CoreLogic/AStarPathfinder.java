@@ -120,10 +120,14 @@ public class AStarPathfinder {
 
         }
         
+        List<Node> nodes = new ArrayList<>();
+        while(!possibleRoute.isEmpty()) {
+            nodes.add(possibleRoute.pop());
+        }
+        
         int[][] returnMap = new int[Navi.xLim][Navi.yLim];
         
-        while (!possibleRoute.isEmpty()) {
-            Node node = possibleRoute.pop();
+        for (Node node : nodes) {
             returnMap[node.x][node.y] = 200;
         }
         

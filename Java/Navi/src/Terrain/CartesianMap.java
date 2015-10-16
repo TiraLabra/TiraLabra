@@ -16,6 +16,10 @@ public class CartesianMap {
     // Parameters
     //================================================================================
     
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    
     private final int xLim;
     private final int yLim;
     private int[][] map;
@@ -190,13 +194,13 @@ public class CartesianMap {
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
                 if (getSingleTile(x, y) == 100) {
-                    System.out.print(" S ");
+                    System.out.print(ANSI_YELLOW + " S " + ANSI_RESET);
                 }
                 else if (getSingleTile(x, y) == 200) {
-                    System.out.print(" X ");
+                    System.out.print(ANSI_RED + " X " + ANSI_RESET);
                 }
                 if (getSingleTile(x, y) == 300) {
-                    System.out.print(" G ");
+                    System.out.print(ANSI_YELLOW + " G " + ANSI_RESET);
                 }
                 else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
                     System.out.print(" 0 ");
