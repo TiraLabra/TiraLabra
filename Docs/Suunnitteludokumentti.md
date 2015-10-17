@@ -3,7 +3,7 @@ Käyttöliittymä kutsuu syötettyjen arvojen pohjalta karttaa, jolle hakuluokka
 Reitti esitetään fonttimerkein, joiden tulkinnat löytyvät ohjelman tulosteesta.
 
 Saavutetut aika- ja tilavaativuudet:
-Selviää joskus.
+Kts. määrittelydokkari.
 
 Työn mahdolliset puutteet ja parannusehdotukset:
 Graafinen käyttöliittymä voisi parantaa ohjelman nautinnollisuuskerrointa.
