@@ -1,6 +1,9 @@
 package Terrain;
 
-// @author Leevi
+/**
+ *
+ * @author Leevi
+ */
 public enum CartesianTile {
 
     HIGHWAY,     
@@ -9,6 +12,11 @@ public enum CartesianTile {
     DIRTROAD,
     VOID;
     
+    /**
+     * Returns movement cost of self.
+     *
+     * @return movement cost if node conforms to any type, -1 if not.
+     */
     public int movementCost() {
         
         switch (this) {
@@ -27,24 +35,12 @@ public enum CartesianTile {
         
     }
     
-    public static int getMovementCostFromType(CartesianTile type) {
-        
-        switch (type) {
-            case HIGHWAY:
-                return 1;
-            case ROAD:
-                return 3;
-            case TRAFFIC:
-                return 6;
-            case DIRTROAD:
-                return 7;
-            case VOID:
-                return 99;
-        }
-        return -1;
-        
-    }
-    
+    /**
+     * Returns movement cost from node's string representation.
+     *
+     * @param node
+     * @return movement cost if node conforms to any type, -1 if not.
+     */
     public static int getMovementCostFromNode(String node) {
         switch (node) {
             case "=":
@@ -61,6 +57,12 @@ public enum CartesianTile {
         return -1;
     }
     
+    /**
+     * Returns movement cost from enum type.
+     *
+     * @param node
+     * @return movement cost if node has any type, -1 if not.
+     */
     public static int getMovementCostFromNodeName(CartesianTile node) {
         switch (node) {
             case HIGHWAY:
@@ -77,6 +79,12 @@ public enum CartesianTile {
         return -1;
     }
     
+    /**
+     * Returns enum type from movement cost.
+     *
+     * @param cost
+     * @return enum type if cost is valid, null if cost is invalid.
+     */
     public static CartesianTile getTypeFromMovementCost(int cost) {
         switch (cost) {
             case 1:

@@ -45,7 +45,7 @@ public class AStarPathfinder {
     //================================================================================
     
     /**
-     * Method searches the shortest 2d path between nodes.
+     * Searches the shortest 2d path between nodes.
      *
      * @param startX
      * @param startY

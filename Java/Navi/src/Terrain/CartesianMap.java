@@ -177,6 +177,12 @@ public class CartesianMap {
     // Setters
     //================================================================================
     
+    /**
+     * Replace map with new one.
+     * 
+     * @param newMap 
+     */
+    
     public void setMap(int[][] newMap) {
         
         this.map = newMap;

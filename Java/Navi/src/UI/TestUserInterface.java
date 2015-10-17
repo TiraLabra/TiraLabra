@@ -1,17 +1,19 @@
 package UI;
 
-// @author Leevi
 import Main.Navi;
 import Terrain.CartesianMap;
 import CoreLogic.AStarPathfinder;
 import java.util.Scanner;
 
+/**
+ *
+ * @author Leevi
+ */
 public class TestUserInterface {
 
-    public TestUserInterface() {
-
-    }
-
+    /**
+     * Starts UI
+     */
     public void startUI() {
 
         System.out.println("***Navi 1.0***\n");
@@ -19,8 +21,11 @@ public class TestUserInterface {
 
     }
 
+    /**
+     * Reads user input and starts simulation.
+     */
     void listMenuItems() {
-
+        
         int terrain = 0;
         int startX = 0;
         int startY = 0;
@@ -95,6 +100,17 @@ public class TestUserInterface {
 
     }
 
+    /**
+     * Calls map generation and A* route calculation.
+     * 
+     * @param terrainType
+     * @param startX
+     * @param startY
+     * @param goalX
+     * @param goalY 
+     * @see CartesianMap
+     * @see AStarPathfinder
+     */
     void run(int terrainType, int startX, int startY, int goalX, int goalY) {
 
         CartesianMap map = new CartesianMap();
@@ -135,7 +151,22 @@ public class TestUserInterface {
         else {
             System.out.println("No routes available.");
         }
-
+        
+        System.out.println("Restart? (y/n)");
+        OUTER:
+        while (true) {
+            String in = scanner.nextLine();
+            switch (in) {
+                case "y":
+                    System.out.println("");
+                    listMenuItems();
+                    break OUTER;
+                case "n":
+                    break OUTER;
+            }
+            System.out.print("> ");
+        }
+        
     }
 
 }
